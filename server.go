@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"golang.org/x/net/websocket"
+	"github.com/tabalt/gracehttp"
 )
 
 // Revel's variables server, router, etc
@@ -158,14 +159,20 @@ func Run(port int) {
 			// to terminate SSL upstream when using unix domain sockets.
 			ERROR.Fatalln("SSL is only supported for TCP sockets. Specify a port to listen on.")
 		}
+		//ERROR.Fatalln("Failed to listen:",
+		//	Server.ListenAndServeTLS(HTTPSslCert, HTTPSslKey))
 		ERROR.Fatalln("Failed to listen:",
-			Server.ListenAndServeTLS(HTTPSslCert, HTTPSslKey))
+			gracehttp.ListenAndServeTLS(Server.Addr, HTTPSslCert, HTTPSslKey, Server.Handler))
 	} else {
-		listener, err := net.Listen(network, Server.Addr)
+		//listener, err := net.Listen(network, Server.Addr)
+		//if err != nil {
+		//	ERROR.Fatalln("Failed to listen:", err)
+		//}
+		//ERROR.Fatalln("Failed to serve:", Server.Serve(listener))
+		err := gracehttp.ListenAndServe(Server.Addr, Server.Handler)
 		if err != nil {
 			ERROR.Fatalln("Failed to listen:", err)
 		}
-		ERROR.Fatalln("Failed to serve:", Server.Serve(listener))
 	}
 }
 
