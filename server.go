@@ -7,7 +7,7 @@ package revel
 import (
 	"fmt"
 	"io"
-	"net"
+//	"net"
 	"net/http"
 	"sort"
 	"strconv"
